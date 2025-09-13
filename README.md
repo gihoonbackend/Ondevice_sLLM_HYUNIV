@@ -381,7 +381,7 @@ Latency: 0.913 s
 
 ![Demo](https://github.com/user-attachments/assets/358b106c-a03f-46ad-8558-a56adddb2c88)
 
-![Demo]https://github.com/Ondevice_sLLM_HYUNIV/assets/358b106c-a03f-46ad-8558-a56adddb2c88)
+![Demo](https://github.com/Ondevice_sLLM_HYUNIV/assets/358b106c-a03f-46ad-8558-a56adddb2c88)
 
 CarBot ACC Demo (CarSim + ROS) -KOREAN VER
 
