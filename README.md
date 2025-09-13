@@ -329,9 +329,9 @@ Say: LKS is now on.
 
 Latency: 0.998 s
 
-4) Turn on ACC leve 2
+4) Turn on ACC 
 
-User: turn on acc leve 2
+User: turn on acc 
 
 Action JSON:
 
