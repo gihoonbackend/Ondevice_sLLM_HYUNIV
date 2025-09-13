@@ -29,6 +29,7 @@ It includes the **dataset format**, training/inference scripts, **quantitative e
 - **Evaluation**:
   - Quant: **EM, Slot Micro/Macro-F1, Schema-valid rate, Latency mean/p95, VRAM peak**
   - Subjective: **LLM-as-a-Judge** (A/B blind, order-flipped, JSON verdicts)
+  - Hardware (Training/Eval): NVIDIA RTX A6000 (48GB VRAM)
 
 ---
 
