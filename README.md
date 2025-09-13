@@ -20,6 +20,7 @@ It includes the **dataset format**, training/inference scripts, **quantitative e
 - [LLM-as-a-Judge (OpenAI)](#llm-as-a-judge-openai)
 - [Reproducible Results (Example)](#reproducible-results-example)
 - [CarBot Inference Examples]
+- [Demo Video]
 ---
 
 ## Highlights
@@ -374,3 +375,38 @@ Say: Lights are off.
 
 Latency: 0.913 s
 ```
+
+---
+## Demo-video
+
+![Demo](https://github.com/user-attachments/assets/358b106c-a03f-46ad-8558-a56adddb2c88)
+
+CarBot ACC Demo (CarSim + ROS) -KOREAN VER
+
+This demo video shows CarBot controlling Adaptive Cruise Control (ACC) in CarSim via ROS. Natural-language commands (e.g., “turn on ACC”, “set headway level to 2”) are parsed by CarBot into a strict Action JSON, then published over ROS to drive the ACC module (ECU mock) in the simulator.
+
+What the video demonstrates
+
+End-to-end pipeline: Natural language → Action JSON → ROS topic → CarSim ACC control
+
+ACC on/off and headway (following distance) level adjustments
+
+Real-time responses with visible latency feedback
+
+Tech stack
+
+CarSim (vehicle dynamics simulation)
+
+ROS (topic-based messaging bridge between CarBot and CarSim)
+
+CarBot LLM (maps user utterances to executable control actions)
+```
+Example commands
+
+turn on acc
+
+set acc headway level to 2
+
+turn off acc
+```
+Note: This is a simulation-only demonstration. No real vehicle is controlled.
