@@ -155,7 +155,46 @@ Latency mean/p95: average & 95th percentile response time
 
 VRAM peak: peak GPU memory during eval
 
+## Evaluation Metrics — Rationale
+1) Correctness & Format
+
+EM (Exact Match)
+Checks whether the <ACTION>{…}</ACTION> JSON is exactly identical to the gold reference (character-for-character).
+Why: In vehicle control, a single parameter mismatch (e.g., level 2 vs 3) can execute the wrong action—“close enough” is not acceptable.
+
+Slot Micro/Macro-F1
+Captures partial correctness beyond all-or-nothing EM.
+
+Micro-F1: aggregates over all slots (key–value pairs) → overall quality.
+
+Macro-F1: averages across samples/intents → sensitive to rare/hard cases.
+Why: Training often improves slot accuracy first; EM alone can miss this progress.
+
+Schema Valid Rate
+Share of outputs that conform to the allowed schema/ranges (levels 1..3, booleans, valid positions, etc.).
+Why: Commands go straight to ECU/gateway; invalid format ⇒ immediate failure. Executability is quality.
+
+2) Real-time & On-device Constraints
+
+Latency (mean / p95)
+Mean = typical speed; p95 = tail latency (perceived “stutter”).
+Why: Infotainment/ADAS control needs snappy UX; high p95 hurts user perception.
+
+VRAM Peak
+Peak GPU memory usage for deployability on constrained devices.
+Why: Quantifies trade-offs from 4-bit/8-bit quantization or LoRA/merge.
+
+3) Task-Specific Choices
+
+Why not BLEU/ROUGE?
+Goal is correct control JSON, not fluent text; similarity metrics poorly reflect control correctness.
+
+Why no separate Intent Accuracy?
+Largely reflected by EM/Slot metrics and a clear action schema.
+(Easy to add later—e.g., “action-name match rate.”)
+
 ---
+
 ## LLM-as-a-Judge (OpenAI)
 ```
 export OPENAI_API_KEY=sk-...
