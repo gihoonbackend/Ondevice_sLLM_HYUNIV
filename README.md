@@ -19,8 +19,6 @@ It includes the **dataset format**, training/inference scripts, **quantitative e
 - [Evaluation (Quantitative)](#evaluation-quantitative)
 - [LLM-as-a-Judge (OpenAI)](#llm-as-a-judge-openai)
 - [Reproducible Results (Example)](#reproducible-results-example)
-- [License](#license)
-- [Citation](#citation)
 
 ---
 
@@ -145,8 +143,33 @@ python scripts/06_eval_em_slot.py \
   --test dataset/splits_carbot_1M/test.jsonl \
   --out  ./outputs/judge_runs
 ```
+Metrics explained
+
+EM: exact JSON match (name and args) vs ground truth
+
+Slot Micro/Macro-F1: partial correctness on args key-value “slots”
+
+Schema-valid rate: allowed action/arg types/ranges obeyed
+
+Latency mean/p95: average & 95th percentile response time
+
+VRAM peak: peak GPU memory during eval
+---
+## LLM-as-a-Judge (OpenAI)
+```
+export OPENAI_API_KEY=sk-...
+python scripts/07_eval_openai_judge.py \
+  --base  ./models/gemma-3-4b-it \
+  --lora  ./outputs/gemma3_4b_it_carbot_lora \
+  --test  dataset/splits_carbot_1M/test.jsonl \
+  --judge gpt-4o-mini \
+  --out   ./outputs/judge_runs
+```
 Blind A/B with order flipping to reduce bias, JSON verdicts.
+
 (Optional) Aggregate into Elo / Bradley–Terry scores.
+
+---
 
 ## Reproducible Results (Example)
 Test set of 590 samples, same hardware:
