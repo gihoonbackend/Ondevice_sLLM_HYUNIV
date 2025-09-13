@@ -154,6 +154,7 @@ Schema-valid rate: allowed action/arg types/ranges obeyed
 Latency mean/p95: average & 95th percentile response time
 
 VRAM peak: peak GPU memory during eval
+
 ---
 ## LLM-as-a-Judge (OpenAI)
 ```
