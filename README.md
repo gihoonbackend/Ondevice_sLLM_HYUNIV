@@ -213,10 +213,64 @@ Blind A/B with order flipping to reduce bias, JSON verdicts.
 
 ## Reproducible Results (Example)
 Test set of 590 samples, same hardware:
-| Model |    EM | Slot Micro-F1 | Slot Macro-F1 | Schema Valid | Latency mean (s) | p95 (s) | VRAM peak (MiB) |
-| ----- | ----: | ------------: | ------------: | -----------: | ---------------: | ------: | --------------: |
-| Base  | 0.222 |         0.503 |         0.537 |        0.312 |             1.02 |    1.16 |           24927 |
-| LoRA  | 0.222 |     **0.527** |     **0.569** |        0.312 |             1.51 |    1.72 |           24948 |
+
+## NO_HINT_PROMPT
+```
+  "You are CarBot, an in-vehicle assistant.\n"
+  "Return exactly two parts in this order:\n"
+  "1) <ACTION>{JSON}</ACTION>\n"
+  "2) <SAY>short natural sentence</SAY>\n"
+  "JSON schema: {\"name\": string, \"args\": {object}}\n"
+  "Constraints:\n"
+  "- STRICT JSON (no natural language in values). No extra keys.\n"
+  "- Positions must be valid; booleans for switches; integer levels.\n"
+```
+
+| Model |    EM | Slot Micro-F1 | Slot Macro-F1 | Schema Valid | Latency mean (s) |   p95 (s) | VRAM peak (MiB) |
+| ----- | ----: | ------------: | ------------: | -----------: | ---------------: | --------: | --------------: |
+| Base  | 0.000 |         0.349 |         0.355 |        0.000 |            1.026 |     1.821 |            8256 |
+| LoRA  | 0.000 |     **0.375** |     **0.382** |        0.000 |        **0.967** | **1.820** |            8255 |
+
+## taxonomy_hint_PROMPT
+```
+  "You are CarBot, an in-vehicle assistant.\n"
+  "Return exactly two parts in this order:\n"
+  "1) <ACTION>{JSON}</ACTION>\n"
+  "2) <SAY>short natural sentence</SAY>\n"
+  "JSON schema: {\"name\": string, \"args\": {object}}\n"
+  "Constraints:\n"
+  "- STRICT JSON (no natural language in values). No extra keys.\n"
+  "- Positions: front_left, front_right, rear_left, rear_right, all\n"
+  "- ACC/LKS levels are 1..3. Switches use {\"on\": true|false}.\n"
+  "Action taxonomy (allowed names & args):\n"
+  "- car.window.set_level: {\"position\": front_left|front_right|rear_left|rear_right|all, \"level\": 1..3}\n"
+  "- car.window.switch: {\"position\": front_left|front_right|rear_left|rear_right|all, \"on\": true|false}\n"
+  "- car.media.set_volume: {\"level\": 0..10}\n"
+  "- car.media.set_mute: {\"on\": true|false}\n"
+  "- car.media.command: {\"name\": play|pause|next|previous}\n"
+  "- car.seat.set_thermal: {\"position\": driver|passenger|rear_left|rear_right, \"level\": 1..3}\n"
+  "- car.steering_wheel.set_heater: {\"on\": true|false}\n"
+  "- car.sunroof.set_level: {\"level\": 1..3}\n"
+  "- car.lights.set: {\"on\": true|false}\n"
+  "- car.wipers.set: {\"level\": 1..3}\n"
+  "- car.acc.set_main: {\"on\": true|false}\n"
+  "- car.acc.set_headway_level: {\"level\": 1..3}\n"
+  "- car.lks.set_main: {\"on\": true|false}\n"
+  "- car.lks.set_assist_level: {\"level\": 1..3}\n"
+  "- ask.clarify: {\"reason\": string}\n"
+  "Examples:\n"
+  "<ACTION>{\"name\":\"car.acc.set_main\",\"args\":{\"on\":true}}</ACTION>\n"
+  "<SAY>ACC is on.</SAY>\n"
+  "<ACTION>{\"name\":\"car.acc.set_headway_level\",\"args\":{\"level\":3}}</ACTION>\n"
+  "<SAY>Following distance set to level 3.</SAY>\n"
+  "<ACTION>{\"name\":\"car.window.set_level\",\"args\":{\"position\":\"rear_right\",\"level\":2}}</ACTION>\n"
+  "<SAY>Opening the right rear window to level 2.</SAY>\n"
+```
+| Model |        EM | Slot Micro-F1 | Slot Macro-F1 | Schema Valid | Latency mean (s) | p95 (s) | VRAM peak (MiB) |
+| ----- | --------: | ------------: | ------------: | -----------: | ---------------: | ------: | --------------: |
+| Base  |     0.500 |         0.552 |         0.609 |        0.890 |            1.048 |   1.189 |            8350 |
+| LoRA  | **0.510** |     **0.560** |     **0.619** |    **0.890** |            1.050 |   1.188 |            8350 |
+
 
 Interpretation: LoRA improves slot-level accuracy, but EM/schema stay flat due to naming/alias mismatches.
 For deployment, prefer merged weights (lower latency).
