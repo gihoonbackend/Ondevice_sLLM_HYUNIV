@@ -19,8 +19,8 @@ It includes the **dataset format**, training/inference scripts, **quantitative e
 - [Evaluation (Quantitative)](#evaluation-quantitative)
 - [LLM-as-a-Judge (OpenAI)](#llm-as-a-judge-openai)
 - [Reproducible Results (Example)](#reproducible-results-example)
-- [CarBot Inference Examples]
-- [Demo Video]
+- [CarBot Inference Examples](#CarBot-Inference-Example)
+- [Demo Video](#Demo-Video)
 ---
 
 ## Highlights
