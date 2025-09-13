@@ -19,7 +19,7 @@ It includes the **dataset format**, training/inference scripts, **quantitative e
 - [Evaluation (Quantitative)](#evaluation-quantitative)
 - [LLM-as-a-Judge (OpenAI)](#llm-as-a-judge-openai)
 - [Reproducible Results (Example)](#reproducible-results-example)
-
+- [CarBot Inference Examples]
 ---
 
 ## Highlights
@@ -35,9 +35,7 @@ It includes the **dataset format**, training/inference scripts, **quantitative e
 ```text
 carbot-gemma3/
 ├─ README.md
-├─ LICENSE
 ├─ dataset/
-│  ├─ DATASET_CARD.md
 │  ├─ carbot_en_levels_1M.jsonl            # (recommend: include only a 1–10k sample; host full set via Releases/LFS)
 │  └─ splits_carbot_1M/
 │     ├─ train.jsonl
@@ -60,8 +58,7 @@ carbot-gemma3/
 │     ├─ ab_metrics_*.json
 │     ├─ ab_judge_base_lora_*.jsonl
 │     └─ (plots)
-├─ .gitignore
-└─ .gitattributes                          # for Git LFS (optional)
+
 ```
 ---
 ## Setup
