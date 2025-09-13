@@ -279,103 +279,27 @@ Applying the normalization layer in evaluation usually boosts EM/schema.
 ---
 
 ## CarBot Inference Examples
-```
-1) Make volume 6
+|  # | User utterance                   | Action name                     | Args (JSON-ish)                        | Say                                   | Latency (s) |
+| -: | -------------------------------- | ------------------------------- | -------------------------------------- | ------------------------------------- | ----------: |
+|  1 | Make volume 6                    | `car.media.set_volume`          | `{"level": 6}`                         | Volume set to 6.                      |       1.359 |
+|  2 | open the driver window           | `car.window.set_level`          | `{"position":"driver","level":2}`      | Opening the driver window to level 2. |       1.121 |
+|  3 | turn on lks                      | `car.lks.set_main`              | `{"on": true}`                         | LKS is now on.                        |       0.998 |
+|  4 | turn on acc                      | `car.acc.set_main`              | `{"on": true}`                         | ACC is on.                            |       0.958 |
+|  5 | turn on acc level 2              | `car.acc.set_headway_level`     | `{"level": 2}`                         | ACC headway level set to 2.           |       1.078 |
+|  6 | turn off light                   | `car.lights.set`                | `{"on": false}`                        | Lights are off.                       |       0.913 |
+|  7 | open all windows full            | `car.window.set_level`          | `{"position":"all","level":3}`         | Opening all windows to level 3.       |           — |
+|  8 | close rear right window          | `car.window.switch`             | `{"position":"rear_right","on":false}` | Closing the rear-right window.        |           — |
+|  9 | sunroof level 1                  | `car.sunroof.set_level`         | `{"level":1}`                          | Sunroof set to level 1.               |           — |
+| 10 | wipers speed 3                   | `car.wipers.set`                | `{"level":3}`                          | Wipers set to level 3.                |           — |
+| 11 | mute audio                       | `car.media.set_mute`            | `{"on": true}`                         | Audio muted.                          |           — |
+| 12 | resume music                     | `car.media.command`             | `{"name":"play"}`                      | Resuming playback.                    |           — |
+| 13 | next track                       | `car.media.command`             | `{"name":"next"}`                      | Skipping to the next track.           |           — |
+| 14 | driver seat heat 2               | `car.seat.set_thermal`          | `{"position":"driver","level":2}`      | Driver seat heat set to 2.            |           — |
+| 15 | steering wheel heater on         | `car.steering_wheel.set_heater` | `{"on": true}`                         | Steering wheel heater is on.          |           — |
+| 16 | increase following distance to 3 | `car.acc.set_headway_level`     | `{"level":3}`                          | Following distance set to level 3.    |           — |
+| 17 | turn off acc                     | `car.acc.set_main`              | `{"on": false}`                        | ACC is off.                           |           — |
+| 18 | lane keeping assist level 2      | `car.lks.set_assist_level`      | `{"level":2}`                          | Lane keeping assist set to level 2.   |           — |
 
-User: Make volume 6
-
-Action JSON:
-
-{
-  "name": "car.media.set_volume",
-  "args": { "level": 6 }
-}
-
-
-Say: Volume set to 6.
-
-Latency: 1.359 s
-
-2) Open the driver window
-
-User: open the driver window
-
-Action JSON:
-
-{
-  "name": "car.window.set_level",
-  "args": { "position": "driver", "level": 2 }
-}
-
-
-Say: Opening the driver window to level 2.
-
-Latency: 1.121 s
-
-3) Turn on LKS
-
-User: turn on lks
-
-Action JSON:
-
-{
-  "name": "car.lks.set_main",
-  "args": { "on": true }
-}
-
-
-Say: LKS is now on.
-
-Latency: 0.998 s
-
-4) Turn on ACC 
-
-User: turn on acc 
-
-Action JSON:
-
-{
-  "name": "car.acc.set_main",
-  "args": { "on": true }
-}
-
-
-Say: ACC is on.
-
-Latency: 0.958 s
-
-5) Turn on ACC level 2
-
-User: turn on acc level 2
-
-Action JSON:
-
-{
-  "name": "car.acc.set_headway_level",
-  "args": { "level": 2 }
-}
-
-
-Say: ACC headway level set to 2.
-
-Latency: 1.078 s
-
-6) Turn off light
-
-User: turn off light
-
-Action JSON:
-
-{
-  "name": "car.lights.set",
-  "args": { "on": false }
-}
-
-
-Say: Lights are off.
-
-Latency: 0.913 s
-```
 
 ---
 ## Demo-video
