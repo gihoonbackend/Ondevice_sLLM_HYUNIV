@@ -1,0 +1,18 @@
+# === core ===
+accelerate==1.2.1
+transformers==4.54.1
+trl==0.17.0
+peft==0.17.0
+datasets>=2.20.0
+huggingface_hub>=0.24.0
+safetensors
+sentencepiece
+
+# === eval / utils ===
+numpy>=1.24.0
+
+# === optional: judge ===
+openai>=1.40.0
+
+# === optional: 4-bit quantization (Linux only; may fail on some GLIBC/CUDA combos) ===
+bitsandbytes>=0.43.0; platform_system=="Linux"
