@@ -275,3 +275,105 @@ Test set of 590 samples, same hardware:
 Interpretation: LoRA improves slot-level accuracy, but EM/schema stay flat due to naming/alias mismatches.
 For deployment, prefer merged weights (lower latency).
 Applying the normalization layer in evaluation usually boosts EM/schema.
+
+
+---
+
+## CarBot Inference Examples
+```
+1) Make volume 6
+
+User: Make volume 6
+
+Action JSON:
+
+{
+  "name": "car.media.set_volume",
+  "args": { "level": 6 }
+}
+
+
+Say: Volume set to 6.
+
+Latency: 1.359 s
+
+2) Open the driver window
+
+User: open the driver window
+
+Action JSON:
+
+{
+  "name": "car.window.set_level",
+  "args": { "position": "driver", "level": 2 }
+}
+
+
+Say: Opening the driver window to level 2.
+
+Latency: 1.121 s
+
+3) Turn on LKS
+
+User: turn on lks
+
+Action JSON:
+
+{
+  "name": "car.lks.set_main",
+  "args": { "on": true }
+}
+
+
+Say: LKS is now on.
+
+Latency: 0.998 s
+
+4) Turn on ACC leve 2
+
+User: turn on acc leve 2
+
+Action JSON:
+
+{
+  "name": "car.acc.set_main",
+  "args": { "on": true }
+}
+
+
+Say: ACC is on.
+
+Latency: 0.958 s
+
+5) Turn on ACC level 2
+
+User: turn on acc level 2
+
+Action JSON:
+
+{
+  "name": "car.acc.set_headway_level",
+  "args": { "level": 2 }
+}
+
+
+Say: ACC headway level set to 2.
+
+Latency: 1.078 s
+
+6) Turn off light
+
+User: turn off light
+
+Action JSON:
+
+{
+  "name": "car.lights.set",
+  "args": { "on": false }
+}
+
+
+Say: Lights are off.
+
+Latency: 0.913 s
+```
