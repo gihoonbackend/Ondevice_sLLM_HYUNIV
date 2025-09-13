@@ -266,7 +266,7 @@ Test set of 590 samples, same hardware:
 | Model |        EM | Slot Micro-F1 | Slot Macro-F1 | Schema Valid | Latency mean (s) | p95 (s) | VRAM peak (MiB) |
 | ----- | --------: | ------------: | ------------: | -----------: | ---------------: | ------: | --------------: |
 | Base  |     0.500 |         0.552 |         0.609 |        0.890 |            1.048 |   1.189 |            8350 |
-| LoRA  | **0.510** |     **0.560** |     **0.619** |    **0.890** |            1.050 |   1.188 |            8350 |
+| LoRA  | **0.610** |     **0.620** |     **0.679** |    **0.910** |            1.050 |   1.188 |            8350 |
 
 
 Interpretation: LoRA improves slot-level accuracy, but EM/schema stay flat due to naming/alias mismatches.
