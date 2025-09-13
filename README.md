@@ -65,13 +65,12 @@ carbot-gemma3/
 ├─ .gitignore
 └─ .gitattributes                          # for Git LFS (optional)
 
-
-Setup
-"""
+---
+## Setup
+'''
 python3.10 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
-"""
 pip install -r requirements.txt
-
-
+'''
+## Recommended versions:
