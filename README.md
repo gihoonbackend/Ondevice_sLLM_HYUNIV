@@ -383,6 +383,9 @@ Latency: 0.913 s
 
 ![Demo](https://github.com/Ondevice_sLLM_HYUNIV/assets/358b106c-a03f-46ad-8558-a56adddb2c88)
 
+<video src="(https://github.com/Ondevice_sLLM_HYUNIV/assets/358b106c-a03f-46ad-8558-a56adddb2c88" controls width="600"></video>
+
+
 CarBot ACC Demo (CarSim + ROS) -KOREAN VER
 
 This demo video shows CarBot controlling Adaptive Cruise Control (ACC) in CarSim via ROS. Natural-language commands (e.g., “turn on ACC”, “set headway level to 2”) are parsed by CarBot into a strict Action JSON, then published over ROS to drive the ACC module (ECU mock) in the simulator.
