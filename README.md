@@ -265,10 +265,11 @@ Test set of 590 samples, same hardware:
   "<ACTION>{\"name\":\"car.window.set_level\",\"args\":{\"position\":\"rear_right\",\"level\":2}}</ACTION>\n"
   "<SAY>Opening the right rear window to level 2.</SAY>\n"
 ```
-| Model |        EM | Slot Micro-F1 | Slot Macro-F1 | Schema Valid | Latency mean (s) | p95 (s) | VRAM peak (MiB) |
-| ----- | --------: | ------------: | ------------: | -----------: | ---------------: | ------: | --------------: |
-| Base  |     0.500 |         0.552 |         0.609 |        0.890 |            1.048 |   1.189 |            8350 |
-| LoRA  | **0.610** |     **0.620** |     **0.679** |    **0.910** |            1.050 |   1.188 |            8350 |
+| Model  |        EM | Slot Micro-F1 | Slot Macro-F1 | Schema Valid | Latency mean (s) | p95 (s) | VRAM peak (MiB) |
+| ------ | --------: | ------------: | ------------: | -----------: | ---------------: | ------: | --------------: |
+| Base   |     0.000 |         0.000 |         0.000 |        0.000 |            0.287 |   1.341 |            2417 |
+| Merged | **0.788** |     **0.837** |     **0.832** |    **0.836** |            0.270 |   0.371 |            4775 |
+
 
 
 Interpretation: LoRA improves slot-level accuracy, but EM/schema stay flat due to naming/alias mismatches.
