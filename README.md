@@ -1,4 +1,5 @@
-# CarBot for LLAMA-3.2-1B (SFT-LORA)
+# CarBot 
+## Gemma-3-4B-IT, LLAMA-3.2-1B-IT (SFT-LORA)
 
 This repository fine-tunes **Gemma-3-4B-IT** into an in-vehicle assistant for infotainment (windows, music, seats) and driver aids (ACC/LKS).  
 It includes the **dataset format**, training/inference scripts, **quantitative evaluation (EM / Slot-F1 / Schema / Latency / VRAM)**, and **LLM-as-a-Judge** comparisons.
