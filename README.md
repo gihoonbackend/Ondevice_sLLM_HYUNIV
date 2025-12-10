@@ -1,4 +1,4 @@
-# CarBot 
+# CarControlBot (ADAS Control)
 ## Gemma-3-4B-IT, LLAMA-3.2-1B-IT (SFT-LORA)
 
 This repository fine-tunes **Gemma-3-4B-IT** into an in-vehicle assistant for infotainment (windows, music, seats) and driver aids (ACC/LKS).  
@@ -212,9 +212,10 @@ Blind A/B with order flipping to reduce bias, JSON verdicts.
 ---
 
 ## Reproducible Results (Example)
+## LLAMA-3.2-1B model
 Test set of 590 samples, same hardware:
 
-## NO_HINT_PROMPT
+## NO_HINT_PROMPT (ZERO-SHOT)
 ```
   "You are CarBot, an in-vehicle assistant.\n"
   "Return exactly two parts in this order:\n"
@@ -222,54 +223,78 @@ Test set of 590 samples, same hardware:
   "2) <SAY>short natural sentence</SAY>\n"
   "JSON schema: {\"name\": string, \"args\": {object}}\n"
   "Constraints:\n"
-  "- STRICT JSON (no natural language in values). No extra keys.\n"
-  "- Positions must be valid; booleans for switches; integer levels.\n"
-```
-
-| Model |    EM | Slot Micro-F1 | Slot Macro-F1 | Schema Valid | Latency mean (s) |   p95 (s) | VRAM peak (MiB) |
-| ----- | ----: | ------------: | ------------: | -----------: | ---------------: | --------: | --------------: |
-| Base  | 0.000 |         0.349 |         0.355 |        0.000 |            1.026 |     1.821 |            8256 |
-| LoRA  | 0.000 |     **0.375** |     **0.382** |        0.000 |        **0.967** | **1.820** |            8255 |
-
-## taxonomy_hint_PROMPT
-```
-  "You are CarBot, an in-vehicle assistant.\n"
-  "Return exactly two parts in this order:\n"
-  "1) <ACTION>{JSON}</ACTION>\n"
-  "2) <SAY>short natural sentence</SAY>\n"
-  "JSON schema: {\"name\": string, \"args\": {object}}\n"
-  "Constraints:\n"
-  "- STRICT JSON (no natural language in values). No extra keys.\n"
+  "- STRICT JSON only. No natural language in JSON values.\n"
+  "- Do NOT create or use any other tags besides <ACTION> and <SAY>.\n"
+  "- If the user's request is ambiguous or missing details, respond using:\n"
+  "  <ACTION>{\"name\": \"ask.clarify\", \"args\": {\"reason\": string}}</ACTION>\n"
+  "  <SAY>short clarification question</SAY>\n"
   "- Positions: front_left, front_right, rear_left, rear_right, all\n"
-  "- ACC/LKS levels are 1..3. Switches use {\"on\": true|false}.\n"
-  "Action taxonomy (allowed names & args):\n"
-  "- car.window.set_level: {\"position\": front_left|front_right|rear_left|rear_right|all, \"level\": 1..3}\n"
-  "- car.window.switch: {\"position\": front_left|front_right|rear_left|rear_right|all, \"on\": true|false}\n"
-  "- car.media.set_volume: {\"level\": 0..10}\n"
-  "- car.media.set_mute: {\"on\": true|false}\n"
-  "- car.media.command: {\"name\": play|pause|next|previous}\n"
-  "- car.seat.set_thermal: {\"position\": driver|passenger|rear_left|rear_right, \"level\": 1..3}\n"
-  "- car.steering_wheel.set_heater: {\"on\": true|false}\n"
-  "- car.sunroof.set_level: {\"level\": 1..3}\n"
-  "- car.lights.set: {\"on\": true|false}\n"
-  "- car.wipers.set: {\"level\": 1..3}\n"
-  "- car.acc.set_main: {\"on\": true|false}\n"
-  "- car.acc.set_headway_level: {\"level\": 1..3}\n"
-  "- car.lks.set_main: {\"on\": true|false}\n"
-  "- car.lks.set_assist_level: {\"level\": 1..3}\n"
+  "- ACC/LKS levels: 1..3. Media volume: 0..15\n"
+  "Action taxonomy:\n"
+  "- car.window.set_level: {\"target\": position, \"level\": int}\n"
+  "- car.window.switch: {\"target\": position, \"on\": bool}\n"
+  "- car.media.set_volume: {\"level\": int}\n"
+  "- car.media.set_mute: {\"on\": bool}\n"
+  "- car.media.command: {\"cmd\": play|pause|next|previous|stop}\n"
+  "- car.seat.set_thermal: {\"seat\": driver|passenger|rear_left|rear_right, \"feature\": heat|vent, \"level\": int}\n"
+  "- car.steering_wheel.set_heater: {\"on\": bool}\n"
+  "- car.sunroof.set_level: {\"level\": int}\n"
+  "- car.lights.set: {\"mode\": off|auto|on, \"high_beam\": bool}\n"
+  "- car.wipers.set: {\"mode\": off|auto|on, \"level\": int}\n"
+  "- car.acc.set_main: {\"on\": bool}\n"
+  "- car.acc.set_headway_level: {\"level\": int}\n"
+  "- car.lks.set_main: {\"on\": bool}\n"
+  "- car.lks.set_assist_level: {\"level\": int}\n"
   "- ask.clarify: {\"reason\": string}\n"
-  "Examples:\n"
-  "<ACTION>{\"name\":\"car.acc.set_main\",\"args\":{\"on\":true}}</ACTION>\n"
-  "<SAY>ACC is on.</SAY>\n"
-  "<ACTION>{\"name\":\"car.acc.set_headway_level\",\"args\":{\"level\":3}}</ACTION>\n"
-  "<SAY>Following distance set to level 3.</SAY>\n"
-  "<ACTION>{\"name\":\"car.window.set_level\",\"args\":{\"position\":\"rear_right\",\"level\":2}}</ACTION>\n"
-  "<SAY>Opening the right rear window to level 2.</SAY>\n"
+
+```
+
+| Model  |        EM | Slot Micro-F1 | Slot Macro-F1 | Schema Valid | Latency mean (s) | p95 (s) | VRAM peak (MiB) |
+| ------ | --------: | ------------: | ------------: | -----------: | ---------------: | ------: | --------------: |
+| Base   |     0.000 |         0.000 |         0.000 |        0.000 |            0.922 |   1.366 |            2407 |
+| Merged | **0.142** |     **0.198** |     **0.145** |    **0.269** |            0.303 |   0.405 |            2407 |
+
+
+## taxonomy_hint_PROMPT (FEW-SHOT)
+```
+      "You are CarBot, an in-vehicle assistant.\n"
+      "Return exactly two parts in this order:\n"
+      "1) <ACTION>{JSON}</ACTION>\n"
+      "2) <SAY>short natural sentence</SAY>\n"
+      "JSON schema: {\"name\": string, \"args\": {object}}\n"
+      "Constraints:\n"
+      "- STRICT JSON (no natural language in values). No extra keys.\n"
+      "- Positions: front_left, front_right, rear_left, rear_right, all\n"
+      "- ACC/LKS levels are 1..3. Switches use {\"on\": true|false}.\n"
+      "Action taxonomy (allowed names & args):\n"
+      "- car.window.set_level: {\"target\": front_left|front_right|rear_left|rear_right|all, \"level\": 1..3}\n"
+      "- car.window.switch: {\"target\": front_left|front_right|rear_left|rear_right|all, \"on\": true|false}\n"
+      "- car.media.set_volume: {\"level\": 0..15}\n"
+      "- car.media.set_mute: {\"on\": true|false}\n"
+      "- car.media.command: {\"cmd\": play|pause|next|previous|stop}\n"
+      "- car.seat.set_thermal: {\"seat\": driver|passenger|rear_left|rear_right, \"feature\": vent|heat, \"level\": 1..3}\n"
+      "- car.steering_wheel.set_heater: {\"on\": true|false}\n"
+      "- car.sunroof.set_level: {\"level\": 1..3}\n"
+      "- car.lights.set: {\"mode\": off|auto|on, \"high_beam\": true|false}\n"
+      "- car.wipers.set: {\"mode\": off|auto|on, \"level\": 1..3}\n"
+      "- car.acc.set_main: {\"on\": true|false}\n"
+      "- car.acc.set_headway_level: {\"level\": 1..3}\n"
+      "- car.lks.set_main: {\"on\": true|false}\n"
+      "- car.lks.set_assist_level: {\"level\": 1..3}\n"
+      "- ask.clarify: {\"reason\": string}\n"
+
+      "Examples:\n"
+      "<ACTION>{\"name\":\"car.acc.set_main\",\"args\":{\"on\":true}}</ACTION>\n"
+      "<SAY>ACC is on.</SAY>\n"
+      "<ACTION>{\"name\":\"car.acc.set_headway_level\",\"args\":{\"level\":3}}</ACTION>\n"
+      "<SAY>Following distance set to level 3.</SAY>\n"
+      "<ACTION>{\"name\":\"car.window.set_level\",\"args\":{\"target\":\"rear_right\",\"level\":2}}</ACTION>\n"
+      "<SAY>Opening the right rear window to level 2.</SAY>\n"
 ```
 | Model  |        EM | Slot Micro-F1 | Slot Macro-F1 | Schema Valid | Latency mean (s) | p95 (s) | VRAM peak (MiB) |
 | ------ | --------: | ------------: | ------------: | -----------: | ---------------: | ------: | --------------: |
 | Base   |     0.000 |         0.000 |         0.000 |        0.000 |            0.287 |   1.341 |            2417 |
-| Merged | **0.788** |     **0.837** |     **0.832** |    **0.836** |            0.270 |   0.371 |            4775 |
+| Merged | **0.788** |     **0.837** |     **0.832** |    **0.836** |            0.270 |   0.371 |            2417 |
 
 
 
